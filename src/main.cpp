@@ -1,18 +1,17 @@
-#include "../include/imgui.h"
-#include "../include/imgui-SFML.h"
-
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 
+#include "../include/imgui.h"
+#include "../include/imgui-SFML.h"
+
 int main() {
-    sf::RenderWindow window(sf::VideoMode(640, 480), "ImGui + SFML = <3");
+    sf::RenderWindow window(sf::VideoMode(640, 480), "FractalForge");
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
 
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    sf::RectangleShape background(sf::Vector2f(640, 480));
+    background.setFillColor(sf::Color::Red);
 
     sf::Clock deltaClock;
     while (window.isOpen()) {
@@ -34,7 +33,7 @@ int main() {
         ImGui::End();
 
         window.clear();
-        window.draw(shape);
+        window.draw(background);
         ImGui::SFML::Render(window);
         window.display();
     }
