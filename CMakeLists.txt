@@ -18,6 +18,7 @@ link_directories(/opt/homebrew/Cellar/sfml/2.6.0/lib)
 
 # Liste des fichiers sources
 file(GLOB SOURCES "src/*.cpp"
+        "src/fractals/*.cpp"
         "include/imgui.cpp"
         "include/imgui_draw.cpp"
         "include/imgui_widgets.cpp"

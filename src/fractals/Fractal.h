@@ -7,13 +7,30 @@
 
 #include <SFML/Graphics.hpp>
 
-
 class Fractal {
-public:
-    virtual void loadShader(const sf::RenderWindow& window) = 0;
-    virtual void update(const sf::RenderWindow& window, float elapsedTime) = 0;
-    virtual void draw(sf::RenderWindow& window) = 0;
-};
+protected:
 
+    sf::Shader *shader{};
+    sf::RectangleShape *background{};
+    sf::RenderWindow *window{};
+    sf::Clock *clock{};
+
+    sf::Vector2f offset{};
+    sf::Vector2f resolution{};
+
+    float zoom{};
+
+public :
+    Fractal(sf::RenderWindow *window,
+            sf::Shader *shader,
+            sf::RectangleShape *background,
+            sf::Clock *clock,
+            sf::Vector2f offset,
+            sf::Vector2f resolution,
+            float zoom);
+
+    virtual void displayParameters() = 0;
+
+};
 
 #endif //FRACTALFORGE_FRACTAL_H
