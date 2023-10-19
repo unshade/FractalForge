@@ -6,6 +6,7 @@
 #include "../include/imgui-SFML.h"
 
 #include "fractals/Fractal.h"
+#include "fractals/Julia.h"
 
 int main() {
 
@@ -22,6 +23,8 @@ int main() {
     sf::Clock deltaClock;
     sf::Clock clock;
 
+    Julia julia(&window, &fullScreenShader, &background, &clock, sf::Vector2f(0, 0), sf::Vector2f(window.getSize()), 1.0f);
+    julia.loadShader();
     // Main engine loop
     while (window.isOpen()) {
 
@@ -39,14 +42,17 @@ int main() {
         // Update gui states
         window.clear();
 
+        // SFML update
+        julia.update();
+
         // ImGui update
         ImGui::SFML::Update(window, deltaClock.restart());
 
+        julia.displayParameters();
 
 
         ImGui::SFML::Render(window);
 
-        // SFML update
 
         window.display();
     }

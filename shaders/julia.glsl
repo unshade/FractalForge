@@ -1,7 +1,7 @@
 uniform vec2 resolution; // Résolution de la fenêtre
 uniform float zoom; // Facteur de zoom
 uniform vec2 offset; // Décalage pour centrer la fractale
-uniform vec2 juliaC; // Constante complexe pour l'ensemble de Julia
+uniform vec2 c; // Constante complexe pour l'ensemble de Julia
 
 vec3 hsvToRgb(vec3 c)
 {
@@ -20,7 +20,7 @@ void main()
     // Itérer sur les coordonnées complexes pour déterminer si le point fait partie de l'ensemble de Julia
     for (i = 0.0; i < 100.0; ++i)
     {
-        z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + juliaC;
+        z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
 
         // Si la magnitude du complexe dépasse 4, le point n'appartient pas à l'ensemble de Julia
         if (dot(z, z) > 4.0)

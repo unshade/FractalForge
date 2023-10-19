@@ -30,6 +30,7 @@ public :
             float zoom);
 
     virtual void displayParameters() = 0;
+    virtual void loadShader() = 0;
 
 };
 
