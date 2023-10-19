@@ -11,6 +11,7 @@
 class Julia : public Fractal {
 private:
     sf::Vector2f c;
+    void updateShader();
 
 public:
     Julia(sf::RenderWindow *window, sf::Shader *shader, sf::RectangleShape *background, sf::Clock *clock,
@@ -19,7 +20,7 @@ public:
     void displayParameters() override;
     void loadShader() override;
     void update();
-    void updateShader();
+
 };
 
 

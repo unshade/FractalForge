@@ -18,16 +18,20 @@ void main()
     float i;
 
     // Itérer sur les coordonnées complexes pour déterminer si le point fait partie de l'ensemble de Julia
-    for (i = 0.0; i < 100.0; ++i)
+    for (i = 0.0; i < 2000.0; ++i)
     {
         z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
 
-        // Si la magnitude du complexe dépasse 4, le point n'appartient pas à l'ensemble de Julia
-        if (dot(z, z) > 4.0)
+        if (dot(z, z) > 100.0)
         break;
     }
 
-    vec3 rgb = hsvToRgb(vec3(i / 100.0, 0.5, 1.0));
-    // Définir la couleur du fragment (pixel) avec la couleur calculée
-    gl_FragColor = vec4(rgb , 1.0);
+    if (i < 100.0) {
+        vec3 rgb = hsvToRgb(vec3(0.5 + (i / 200.0), 0.5, 1.0));
+        gl_FragColor = vec4(rgb, 1.0);
+    } else {
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); // Noir
+    }
+
+
 }

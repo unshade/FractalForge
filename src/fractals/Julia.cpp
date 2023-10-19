@@ -28,7 +28,6 @@ void Julia::loadShader() {
     this->shader->setUniform("offset", this->offset);
     this->shader->setUniform("zoom", this->zoom);
     this->shader->setUniform("c", this->c);
-    //this->shader->setUniform("time", this->clock->getElapsedTime().asSeconds());
     this->window->draw(*this->background, this->shader);
 }
 
@@ -41,6 +40,5 @@ void Julia::updateShader() {
     this->shader->setUniform("offset", this->offset);
     this->shader->setUniform("zoom", this->zoom);
     this->shader->setUniform("c", this->c);
-    //this->shader->setUniform("time", this->clock->getElapsedTime().asSeconds());
     this->window->draw(*this->background, this->shader);
 }

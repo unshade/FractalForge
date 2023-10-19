@@ -31,6 +31,7 @@ public :
 
     virtual void displayParameters() = 0;
     virtual void loadShader() = 0;
+    virtual void update() = 0;
 
 };
 

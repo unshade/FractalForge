@@ -23,8 +23,11 @@ int main() {
     sf::Clock deltaClock;
     sf::Clock clock;
 
-    Julia julia(&window, &fullScreenShader, &background, &clock, sf::Vector2f(0, 0), sf::Vector2f(window.getSize()), 1.0f);
-    julia.loadShader();
+    Julia julia(&window, &fullScreenShader, &background, &clock, sf::Vector2f(0, 0), sf::Vector2f(window.getSize()),
+                1.0f);
+    std::vector<Fractal *> fractals = {&julia};
+    Fractal *currentFractal = nullptr;
+
     // Main engine loop
     while (window.isOpen()) {
 
@@ -43,13 +46,23 @@ int main() {
         window.clear();
 
         // SFML update
-        julia.update();
+        if (currentFractal != nullptr) {
+            currentFractal->update();
+        }
 
         // ImGui update
         ImGui::SFML::Update(window, deltaClock.restart());
 
-        julia.displayParameters();
+        ImGui::Begin("Select a fractal");
+        if (ImGui::Button("Julia")) {
+            julia.loadShader();
+            currentFractal = &julia;
+        }
+        ImGui::End();
 
+        if (currentFractal != nullptr) {
+            currentFractal->displayParameters();
+        }
 
         ImGui::SFML::Render(window);
 
