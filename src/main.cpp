@@ -23,6 +23,7 @@ int main() {
     sf::Clock deltaClock;
     sf::Clock clock;
 
+    // Fractal setup
     Julia julia(&window, &fullScreenShader, &background, &clock, sf::Vector2f(0, 0), sf::Vector2f(window.getSize()),
                 1.0f);
     std::vector<Fractal *> fractals = {&julia};
@@ -45,7 +46,7 @@ int main() {
         // Update gui states
         window.clear();
 
-        // SFML update
+        // Fractal update
         if (currentFractal != nullptr) {
             currentFractal->update();
         }
