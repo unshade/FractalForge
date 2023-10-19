@@ -31,6 +31,18 @@ add_executable(FractalForge ${SOURCES})
 # Liens des bibliothèques
 target_link_libraries(FractalForge sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
 
+# Copier le fichier mandelbrot dans le répertoire de construction
+add_custom_target(copy_shader ALL
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/shaders/julia.glsl
+        ${CMAKE_BINARY_DIR}/shaders/julia.glsl
+        DEPENDS ${CMAKE_SOURCE_DIR}/shaders/julia.glsl)
+
+# Ajouter une dépendance à l'exécutable pour copier le shader lorsque le fichier est modifié
+add_dependencies(FractalForge copy_shader)
+
+
+
 if(APPLE)
     # Sur macOS, ajouter des frameworks supplémentaires
     find_library(OPENGL_LIBRARY OpenGL)
