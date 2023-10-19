@@ -21,28 +21,29 @@ vec3 hsv2rgb(vec3 c)
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-void main()
-{
-    // Convertir les coordonnées du pixel en coordonnées complexes
-    vec2 uv = (gl_FragCoord.xy / resolution) * zoom + offset;
+
+void main() {
+    vec2 uv = ((gl_FragCoord.xy / resolution) - 0.5) * zoom + offset;
     vec2 z = uv;
     float i;
-
-    // Itérer sur les coordonnées complexes pour déterminer si le point fait partie de l'ensemble de Julia
-    for (i = 0.0; i < 2000.0; ++i)
-    {
+    for (i = 0.0; i < 2000.0; ++i) {
         z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-
-        if (dot(z, z) > 100.0)
+        if (sqrt(dot(z, z)) > 100.0)
         break;
     }
 
-    if (i < 100.0) {
-        vec3 rgb = hsv2rgb(vec3((i / 100.0), 0.5, 1.0));
+    // Lissage
+    float smoothValue;
+    if (i < 2000.0) {  // Si nous n'avons pas atteint le maximum d'itérations
+        smoothValue = i + 1.0 - log(log(length(z))) / log(2.0);
+    } else {
+        smoothValue = i;
+    }
+
+    if (smoothValue < 100.0) {
+        vec3 rgb = hsv2rgb(vec3((smoothValue / 100.0), 0.5, 1.0));
         gl_FragColor = vec4(rgb, 1.0);
     } else {
         gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); // Noir
     }
-
-
 }

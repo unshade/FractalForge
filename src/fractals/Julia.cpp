@@ -10,7 +10,7 @@
 #include "iostream"
 
 Julia::Julia(sf::RenderWindow *window, sf::Shader *shader, sf::RectangleShape *background, sf::Clock *clock,
-             sf::Vector2f offset, sf::Vector2f resolution, float zoom) : Fractal(window, shader, background, clock,
+             sf::Vector2f* offset, sf::Vector2f resolution, float* zoom) : Fractal(window, shader, background, clock,
                                                                                  offset, resolution, zoom) {
 
 }
@@ -25,8 +25,8 @@ void Julia::displayParameters() {
 void Julia::loadShader() {
     this->shader->loadFromFile("shaders/julia.glsl", sf::Shader::Fragment);
     this->shader->setUniform("resolution", this->resolution);
-    this->shader->setUniform("offset", this->offset);
-    this->shader->setUniform("zoom", this->zoom);
+    this->shader->setUniform("offset", *this->offset);
+    this->shader->setUniform("zoom", *this->zoom);
     this->shader->setUniform("c", this->c);
     this->window->draw(*this->background, this->shader);
 }
@@ -37,8 +37,8 @@ void Julia::update() {
 
 void Julia::updateShader() {
     this->shader->setUniform("resolution", this->resolution);
-    this->shader->setUniform("offset", this->offset);
-    this->shader->setUniform("zoom", this->zoom);
+    this->shader->setUniform("offset", *this->offset);
+    this->shader->setUniform("zoom", *this->zoom);
     this->shader->setUniform("c", this->c);
     this->window->draw(*this->background, this->shader);
 }

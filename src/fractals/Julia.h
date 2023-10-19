@@ -15,11 +15,11 @@ private:
 
 public:
     Julia(sf::RenderWindow *window, sf::Shader *shader, sf::RectangleShape *background, sf::Clock *clock,
-          sf::Vector2f offset, sf::Vector2f resolution, float zoom);
+          sf::Vector2f* offset, sf::Vector2f resolution, float *zoom);
 
     void displayParameters() override;
     void loadShader() override;
-    void update();
+    void update() override;
 
 };
 

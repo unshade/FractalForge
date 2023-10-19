@@ -7,7 +7,7 @@
 #include "../include/imgui-SFML.h"
 
 Fractal::Fractal(sf::RenderWindow *window, sf::Shader *shader, sf::RectangleShape *background, sf::Clock *clock,
-                 sf::Vector2f offset, sf::Vector2f resolution, float zoom) {
+                 sf::Vector2f* offset, sf::Vector2f resolution, float* zoom) {
 
     this->window = window;
     this->shader = shader;

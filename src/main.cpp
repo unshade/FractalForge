@@ -23,11 +23,16 @@ int main() {
     sf::Clock deltaClock;
     sf::Clock clock;
 
+    float zoom = 3.0f;
+    sf::Vector2f offset(0, 0);
+
     // Fractal setup
-    Julia julia(&window, &fullScreenShader, &background, &clock, sf::Vector2f(0, 0), sf::Vector2f(window.getSize()),
-                1.0f);
+    Julia julia(&window, &fullScreenShader, &background, &clock, &offset, sf::Vector2f(window.getSize()), &zoom);
     std::vector<Fractal *> fractals = {&julia};
     Fractal *currentFractal = nullptr;
+
+    sf::Vector2i lastMousePosition;
+    bool mouseDrag = false;
 
     // Main engine loop
     while (window.isOpen()) {
@@ -39,6 +44,28 @@ int main() {
 
             if (event.type == sf::Event::Closed) {
                 window.close();
+            }
+
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    mouseDrag = true;
+                    lastMousePosition = sf::Mouse::getPosition(window);
+                }
+            }
+
+            if (event.type == sf::Event::MouseButtonReleased) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    mouseDrag = false;
+                }
+            }
+
+            // also check if not dragging an ImGui window
+            if (event.type == sf::Event::MouseMoved && mouseDrag && !ImGui::IsAnyItemActive()) {
+                sf::Vector2i currentMousePosition = sf::Mouse::getPosition(window);
+                sf::Vector2i delta = currentMousePosition - lastMousePosition;
+                offset.x -= delta.x * (zoom / window.getSize().x);  // Ces facteurs peuvent être ajustés pour des déplacements plus doux
+                offset.y += delta.y * (zoom / window.getSize().y);
+                lastMousePosition = currentMousePosition;
             }
         }
         // -- END EVENT HANDLING --
@@ -59,6 +86,7 @@ int main() {
             julia.loadShader();
             currentFractal = &julia;
         }
+        ImGui::SliderFloat("zoom", &zoom, 0.0f, 2.f, "%.9f");
         ImGui::End();
 
         if (currentFractal != nullptr) {
