@@ -27,7 +27,7 @@ void main() {
 
     vec2 z = uv;
     float i;
-    for (i = 0.0; i < 10000.0; ++i) {
+    for (i = 0.0; i < 100.0; ++i) {
         z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
         if (sqrt(dot(z, z)) > 4.0) // Changement de la condition de sortie
         break;
@@ -36,7 +36,7 @@ void main() {
 
     // Lissage
     float smoothValue;
-    if (i < 10000.0) {  // Si nous n'avons pas atteint le maximum d'itérations
+    if (i < 100.0) {  // Si nous n'avons pas atteint le maximum d'itérations
         smoothValue = i + 1.0 - log(log(length(z))) / log(2.0);
     } else {
         smoothValue = i;
