@@ -19,6 +19,13 @@ void Julia::displayParameters() {
     ImGui::Begin("Julia parameters");
     ImGui::SliderFloat("c real", &this->c.x, -1.0f, 1.0f, "%.9f");
     ImGui::SliderFloat("c imaginary", &this->c.y, -1.0f, 1.0f, "%.9f");
+
+    for (auto & parameter : this->parameters) {
+        if (ImGui::Button(parameter.first.c_str())) {
+            this->c = parameter.second;
+        }
+    }
+
     ImGui::End();
 }
 

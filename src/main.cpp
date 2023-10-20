@@ -11,8 +11,8 @@
 int main() {
 
     // Window and ImGui setup
-    sf::RenderWindow window(sf::VideoMode(3840, 2160), "FractalForge");
-    window.setFramerateLimit(60);
+    sf::RenderWindow window(sf::VideoMode(2560, 1600), "FractalForge");
+    window.setFramerateLimit(30);
     ImGui::SFML::Init(window);
 
     // Fractal shader setup
@@ -23,8 +23,9 @@ int main() {
     sf::Clock deltaClock;
     sf::Clock clock;
 
-    float zoom = 3.0f;
+    float zoom = 0.1f;
     sf::Vector2f offset(0, 0);
+    float scale_factor = 0.7f;
 
     // Fractal setup
     Julia julia(&window, &fullScreenShader, &background, &clock, &offset, sf::Vector2f(window.getSize()), &zoom);
@@ -59,12 +60,26 @@ int main() {
                 }
             }
 
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Z) {
+                    zoom *= 1.1f;
+                }
+                if (event.key.code == sf::Keyboard::S) {
+                    zoom *= 0.9f;
+                }
+                if (event.key.code == sf::Keyboard::E) {
+                    window.close();
+                }
+            }
+
             // also check if not dragging an ImGui window
             if (event.type == sf::Event::MouseMoved && mouseDrag && !ImGui::IsAnyItemActive()) {
                 sf::Vector2i currentMousePosition = sf::Mouse::getPosition(window);
                 sf::Vector2i delta = currentMousePosition - lastMousePosition;
-                offset.x -= delta.x * (zoom / window.getSize().x);  // Ces facteurs peuvent être ajustés pour des déplacements plus doux
-                offset.y += delta.y * (zoom / window.getSize().y);
+
+                offset.x -= (delta.x * scale_factor) / (zoom * window.getSize().x);
+                offset.y += (delta.y * scale_factor) / (zoom * window.getSize().y);
+
                 lastMousePosition = currentMousePosition;
             }
         }
@@ -86,7 +101,7 @@ int main() {
             julia.loadShader();
             currentFractal = &julia;
         }
-        ImGui::SliderFloat("zoom", &zoom, 0.0f, 2.f, "%.9f");
+        // ImGui::SliderFloat("zoom", &zoom, 0.0f, 5.f, "%.9f"); replace by Z keyboard
         ImGui::End();
 
         if (currentFractal != nullptr) {

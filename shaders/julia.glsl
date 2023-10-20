@@ -23,27 +23,31 @@ vec3 hsv2rgb(vec3 c)
 
 
 void main() {
-    vec2 uv = ((gl_FragCoord.xy / resolution) - 0.5) * zoom + offset;
+    vec2 uv = ((gl_FragCoord.xy / resolution) - 0.5) / zoom + offset;
+
     vec2 z = uv;
     float i;
-    for (i = 0.0; i < 2000.0; ++i) {
+    for (i = 0.0; i < 10000.0; ++i) {
         z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-        if (sqrt(dot(z, z)) > 100.0)
+        if (sqrt(dot(z, z)) > 4.0) // Changement de la condition de sortie
         break;
+
     }
 
     // Lissage
     float smoothValue;
-    if (i < 2000.0) {  // Si nous n'avons pas atteint le maximum d'itérations
+    if (i < 10000.0) {  // Si nous n'avons pas atteint le maximum d'itérations
         smoothValue = i + 1.0 - log(log(length(z))) / log(2.0);
     } else {
         smoothValue = i;
     }
 
+
     if (smoothValue < 100.0) {
-        vec3 rgb = hsv2rgb(vec3((smoothValue / 100.0), 0.5, 1.0));
+        vec3 rgb = hsv2rgb(vec3(0.2 + (smoothValue / 100.0), 0.8 + (smoothValue / 200.0), 0.85 + (smoothValue / 200.0)));
         gl_FragColor = vec4(rgb, 1.0);
     } else {
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); // Noir
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); // Noire
     }
+
 }
